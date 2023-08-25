@@ -3,7 +3,7 @@ package com.practice.todoapp.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Entity
 public class Task extends BaseEntity{
