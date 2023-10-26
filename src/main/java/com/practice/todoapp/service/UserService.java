@@ -16,4 +16,6 @@ public interface UserService {
     Optional<User> getById(Integer id);
 
     void update(User user, Integer id);
+
+    void updateStatus(Integer id, Boolean status);
 }

@@ -6,6 +6,7 @@ import com.practice.todoapp.service.UserService;
 import org.springframework.stereotype.Service;
 
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
               user.setFirstName(newUser.getFirstName());
               user.setPassword(newUser.getFirstName());
               user.setLastName(newUser.getLastName());
-              user.setStatus(newUser.getStatus());
+
               user.setUpdatedDate(LocalDate.now());
 
               userRepo.save(user);
@@ -69,4 +70,18 @@ public class UserServiceImpl implements UserService {
 
           else throw new RuntimeException("User not found");
     }
+
+    @Override
+    public void updateStatus(Integer id, Boolean status) {
+
+        Optional <User> userOptional = getById(id);
+
+        if (userOptional.isPresent()){
+
+            User user = userOptional.get();
+            user.setStatus(status);
+            userRepo.save(user);
+        }
+    }
+
 }

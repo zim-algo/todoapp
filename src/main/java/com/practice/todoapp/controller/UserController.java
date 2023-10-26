@@ -41,4 +41,14 @@ public class UserController {
     public void save(@RequestBody User user){
         userService.save(user);
     }
+
+    @PutMapping("/{id}/activate")
+    public void activateUser(@PathVariable Integer id){
+        userService.updateStatus(id, true);
+    }
+
+    @PutMapping("/{id}/deactivate")
+    public void deactivateUser(@PathVariable Integer id){
+        userService.updateStatus(id, false);
+    }
 }
