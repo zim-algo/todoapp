@@ -5,6 +5,7 @@ import com.practice.todoapp.repository.UserRepo;
 import com.practice.todoapp.service.UserService;
 import org.springframework.stereotype.Service;
 
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
           user.setCreatedDate(LocalDate.now());
           user.setUpdatedDate(LocalDate.now());
           userRepo.save(user);
+
     }
 
     @Override
