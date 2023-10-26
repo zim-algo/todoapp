@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
 
             User user = userOptional.get();
             user.setStatus(status);
+            user.setUpdatedDate(LocalDate.now());
             userRepo.save(user);
         }
     }
