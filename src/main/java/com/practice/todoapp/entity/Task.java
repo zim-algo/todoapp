@@ -14,6 +14,10 @@ public class Task extends BaseEntity{
     LocalDate deadline;
     LocalDate completionDate;
 
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
     public Task() {
     }
 
@@ -94,7 +98,5 @@ public class Task extends BaseEntity{
                 ", updatedDate=" + updatedDate +
                 '}';
     }
-    @ManyToOne
-    @JoinColumn
-    private User user;
+
 }
