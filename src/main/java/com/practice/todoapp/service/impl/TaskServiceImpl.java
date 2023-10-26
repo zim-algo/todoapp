@@ -7,6 +7,7 @@ import com.practice.todoapp.repository.UserRepo;
 import com.practice.todoapp.service.TaskService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +23,20 @@ public class TaskServiceImpl implements TaskService {
         this.userRepo = userRepo;
     }
     @Override
-    public void save(Task task) {
-        taskRepo.save(task);
+    public void save(Task task, Integer userId) {
+        if (userRepo.existsById(userId)){
+            task.setCreatedDate(LocalDate.now());
+            task.setUpdatedDate(LocalDate.now());
+
+            User newUser = new User();
+            newUser.setId(userId);
+
+            task.setStatus(false);
+
+            task.setUser(newUser);
+
+            taskRepo.save(task);
+        }
     }
 
     @Override
@@ -32,23 +45,27 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<Task> getById(Integer id) {
+    public Optional<Task> getById(Integer userId, Integer taskId) {
 
-        if (taskRepo.existsById(id)){
-            return taskRepo.findById(id);
+        if (!userRepo.existsById(userId)){
+            throw new RuntimeException("User can not be found");
         }
-        else throw new RuntimeException("Task can not be found");
+        return taskRepo.findById(taskId);
     }
 
     @Override
-    public void delete(Integer id) {
-        taskRepo.deleteById(id);
+    public void delete(Integer userId, Integer id) {
+
+        if(!userRepo.existsById(userId)) {
+            throw new RuntimeException("Task can not be found");
+        }
+        else taskRepo.deleteById(id);
     }
 
     @Override
     public void update(Task newTask, Integer id) {
 
-        Optional<Task> taskOptional = getById(id);
+        Optional<Task> taskOptional = taskRepo.findById(id);
 
         if(taskOptional.isPresent()){
 
@@ -62,7 +79,7 @@ public class TaskServiceImpl implements TaskService {
 
             taskRepo.save(task);
         }
-        throw new RuntimeException("Task not found");
+        else throw new RuntimeException("Task not found");
 
     }
 
@@ -72,6 +89,25 @@ public class TaskServiceImpl implements TaskService {
         if (userRepo.existsById(userId)){
             return taskRepo.getTasksByUserId(userId);
         }
-        throw new RuntimeException("User not found");
+       else throw new RuntimeException("User not found");
+    }
+
+    @Override
+    public void updateStatus(Integer taskId, Boolean status) {
+
+        Optional<Task> taskOptional = taskRepo.findById(taskId);
+
+        if (!taskOptional.isPresent()){
+            throw new RuntimeException("Task not found");
+        }
+        Task task = taskOptional.get();
+
+        if (status){
+            task.setCompletionDate(LocalDate.now());
+        }
+        else task.setCompletionDate(null);
+
+        task.setStatus(status);
+        taskRepo.save(task);
     }
 }

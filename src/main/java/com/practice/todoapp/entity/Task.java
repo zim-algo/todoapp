@@ -18,6 +18,7 @@ public class Task extends BaseEntity{
     @JoinColumn
     private User user;
 
+
     public Task() {
     }
 
@@ -83,6 +84,14 @@ public class Task extends BaseEntity{
 
     public void setCompletionDate(LocalDate completionDate) {
         this.completionDate = completionDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
