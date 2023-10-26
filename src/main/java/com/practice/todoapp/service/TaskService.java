@@ -16,4 +16,6 @@ public interface TaskService {
     void delete (Integer id);
 
     void update(Task newTask, Integer id);
+
+    List<Task> getTasksByUserId (Integer userId);
 }

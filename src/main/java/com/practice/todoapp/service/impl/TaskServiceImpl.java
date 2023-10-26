@@ -1,7 +1,9 @@
 package com.practice.todoapp.service.impl;
 
 import com.practice.todoapp.entity.Task;
+import com.practice.todoapp.entity.User;
 import com.practice.todoapp.repository.TaskRepo;
+import com.practice.todoapp.repository.UserRepo;
 import com.practice.todoapp.service.TaskService;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +15,11 @@ public class TaskServiceImpl implements TaskService {
 
     private TaskRepo taskRepo;
 
-    public TaskServiceImpl(TaskRepo taskRepo){
+    private UserRepo userRepo;
+
+    public TaskServiceImpl(TaskRepo taskRepo, UserRepo userRepo){
         this.taskRepo = taskRepo;
+        this.userRepo = userRepo;
     }
     @Override
     public void save(Task task) {
@@ -59,5 +64,14 @@ public class TaskServiceImpl implements TaskService {
         }
         throw new RuntimeException("Task not found");
 
+    }
+
+    @Override
+    public List<Task> getTasksByUserId(Integer userId) {
+
+        if (userRepo.existsById(userId)){
+            return taskRepo.getTasksByUserId(userId);
+        }
+        throw new RuntimeException("User not found");
     }
 }
